@@ -57,7 +57,7 @@ class VideoCapture():
 
 class analyse():
     def getData(self):
-        print(video_thread)
+        print(video_thread.getFrame())
     
     def recuperation(self):
         while(1):
