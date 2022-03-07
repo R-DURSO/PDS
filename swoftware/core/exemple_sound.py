@@ -18,14 +18,15 @@ stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_
 print("Recording...")
 
 frames = []
-  
+energy = []
 for t in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
                      #read the audio source
     data = stream.read(CHUNK, exception_on_overflow = False)   
     feature = np.fromstring(data, dtype=np.int16) #feature =! 1024
-                                       #conversion in int
+    print("min  :",min(feature))                                   #conversion in int
     feature = math.sqrt(np.sum(np.square(feature, dtype=np.int32))/len(feature))    #calculate energies
-    print("energy : ", feature)
+
+    # print("energy : ", feature)
 
 print("Done")
 
