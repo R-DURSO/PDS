@@ -5,8 +5,6 @@ import cv2 as cv
 import pyaudio as pa 
 import numpy as np
 import math
-import threading
-import time
 # image settings 
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
