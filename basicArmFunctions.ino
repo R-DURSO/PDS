@@ -115,11 +115,11 @@ void putObjectAsideBad(){
  */
 
 void waitAtSafetyPos(int signal, bool isClosed){
-  if(signal==1){
-    isClosed ? Braccio.ServoMovement(20, 90, 45, 180, 180, 90, 10):Braccio.ServoMovement(20, 90, 45, 180, 180, 90, 73);
+  if(signal== '1'){
+    isClosed ? Braccio.ServoMovement(20, 90, 15, 180, 150, 90, 10):Braccio.ServoMovement(20, 90, 15, 180, 150, 90, 73);
     delay(1000);
   }
-    
+
 }
 
 

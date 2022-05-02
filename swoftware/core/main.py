@@ -30,7 +30,6 @@ def arm_mock(action):
 def emotionUpdate(last_emotional_state,received_emotion,action):
     #TODO  clarification de la méthode de calcul 
     diff = emotion_to_action[last_emotional_state] - emotion_to_action[received_emotion]
-    print(diff)
     fonctionActivation[action] += diff
 
 def chooseAction(recevied_emotion):
@@ -91,29 +90,33 @@ def checkSound(Sound):
 #     if (not end_option):
 #         logger.write(" end of execution")
 #         break
-'''' idée : 
+
+''' idée : 
  - principe de log 
-    principe de sauvegarde d'axtion de la dernière interaction'''
+    principe de sauvegarde d'axtion de la dernière interaction
+'''
 
 
-'''  le CNN retourne le chiffre '''
+'''  le CNN retourne le chiffre 
+préparer les test et la certification 
+ '''
 
 def modificationValEm():
     print("début du programme ")
     print(fonctionActivation)
     emotion = cnn_mock("")
-    print("emotion ",emotion )
+    print("emotion ",emotional_vector[emotion] )
     indexAction = chooseAction(emotion)
-    print("valeur de l'émotion",indexAction)
+    print("valeur de l'émotion ",indexAction)
     val = doARM(indexAction)
     print("pendant le déplacement du bras ")
     newemotion =  2
-    print("nouvelle emotion",newemotion)
     emotionUpdate(emotion,newemotion,val)
+    print("nouvelle emotion",emotional_vector[emotion])
     print(fonctionActivation)
     print("nouvelle action")
-    val = chooseAction(newemotion)
-    print("valeur de l'émotion",val)
+    val = chooseAction(emotion)
+    print("valeur de l'émotion ",val)
     val = doARM(val)
 
 print(fonction1.__name__)

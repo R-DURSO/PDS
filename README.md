@@ -1,9 +1,9 @@
 # PDS
 
 Condition pour l'utilisation du projet :
-- mise en place de la librairie opencv
-- mise en place de la librairie pyaudio
-
+- mise en place de la librairie opencv : 
+- mise en place de la librairie pyaudio : 
+- mise en place de la libraire serial : pip install pyserial
 
 gcc en 64 bit sur window 
 https://winlibs.com/
@@ -12,3 +12,5 @@ ajout dans la varible d'environnement
 
 base de données : 
 https://www.kaggle.com/datasets/msambare/fer2013
+
+
