@@ -30,7 +30,6 @@ while True:
     # frame = cv2.resize(frame, (1280, 720))
     if not ret:
         break
-    print("test")
     face_detector = cv2.CascadeClassifier(path+'/haarcascades/haarcascade_frontalface_default.xml')
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
  
