@@ -47,6 +47,7 @@ class SoundCapture():
         # we define the current channel of webcam sound 
         for i in range(0, numdevices):
             if (self.p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+                print(self.p.get_device_info_by_host_api_device_index(0, i))
                 if("Microphone (USB Audio Device)"== self.p.get_device_info_by_host_api_device_index(0, i).get('name')):
                     INPUT = i
         # création du flux 
