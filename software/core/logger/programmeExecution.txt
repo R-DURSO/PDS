@@ -1,2 +1,6 @@
 start of execution 
- start of executionstart of executionstart of execution
+sound recuperation 
+cnn utilisation 
+emotional values checking 
+arm function talking 
+emotion status update

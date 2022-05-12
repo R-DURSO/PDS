@@ -26,12 +26,13 @@ class VideoCapture():
         self.video = cv.VideoCapture(0,cv.CAP_DSHOW)
         self.greyscale = None
         self.frame = None
+        self.ret = None
     def getFrame(self):
         return self.frame
     def getGreyscale(self):
         return self.greyscale
     def view(self):
-            ret , self.frame = self.video.read()
+            self.ret , self.frame = self.video.read()
             self.greyscale =  cv.cvtColor(self.frame, cv.COLOR_BGR2GRAY)
             cv.imshow("output",self.frame) 
             cv.waitKey(1)
@@ -47,7 +48,6 @@ class SoundCapture():
         # we define the current channel of webcam sound 
         for i in range(0, numdevices):
             if (self.p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
-                print(self.p.get_device_info_by_host_api_device_index(0, i))
                 if("Microphone (USB Audio Device)"== self.p.get_device_info_by_host_api_device_index(0, i).get('name')):
                     INPUT = i
         # création du flux 
@@ -71,14 +71,14 @@ class SoundCapture():
         self.p.terminate()
 
 
-video = VideoCapture()
-sound = SoundCapture()
-it = 0
-while (it < 100):
-    video.view()
-    sound.capture()
-    it += 1
-print("end")
-video.stop()
-sound.stop()
-cv.destroyAllWindows()
+# video = VideoCapture()
+# sound = SoundCapture()
+# it = 0
+# while (it < 100):
+#     video.view()
+#     sound.capture()
+#     it += 1
+# print("end")
+# video.stop()
+# sound.stop()
+# cv.destroyAllWindows()
