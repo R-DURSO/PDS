@@ -10,7 +10,7 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 
 # voice settings 
-CHUNK = 1024
+CHUNK = 1420
 FORMAT = pa.paInt16
 RECORD_SECONDS = 5
 RATE=44100
@@ -62,7 +62,8 @@ class SoundCapture():
             feature = np.fromstring(data, dtype=np.int16) #feature =! 1024
                                        #conversion in int
             self.energy = math.sqrt(np.sum(np.square(feature, dtype=np.int32))/len(feature))    #calculate energies
-            print(self.energy)
+            # print(self.energy)
+            return self.energy
     def getEnergy(self):
         return self.energy
     def stop(self):
@@ -70,15 +71,3 @@ class SoundCapture():
         self.stream.close()
         self.p.terminate()
 
-
-# video = VideoCapture()
-# sound = SoundCapture()
-# it = 0
-# while (it < 100):
-#     video.view()
-#     sound.capture()
-#     it += 1
-# print("end")
-# video.stop()
-# sound.stop()
-# cv.destroyAllWindows()

@@ -1,4 +1,5 @@
 # import sensor
+from time import sleep
 import numpy as np 
 import os
 import cnn.API_CNN as cnn 
@@ -19,6 +20,7 @@ last_emotional_state = 0
 cpt =  0
 fonctionActivation = np.array([-2,0,2])
 get_action  = {0:"fonction1",1:"fonction2",2:"fonction3"}
+end_option = False
 ''' mock variable '''
 emotional_vector_mock = np.random.randint(0,6)
 
@@ -47,42 +49,44 @@ def checkArmMoving():
 def doARM(val):
     difference_array = np.abs(fonctionActivation-val)
     index = difference_array.argmin()
+    robotsave.write(get_action[index])
     globals()[get_action[index]]()
     
     return index
 
-def checkSound(Sound):
-    pass
-
+def checkSound(energy):
+    if energy > 1400 :
+        return True
+    return False 
 ''' main boucle 
 '''
 logger = open("./logger/programmeExecution.txt", "w")
 robotsave = open("./logger/robotAction.txt", "w")
 video = sensor.VideoCapture()
-# sound = sensor.SoundCapture()
+sound = sensor.SoundCapture()
 energy =  0
 print("début du main ")
 logger.write("start of execution \n")
 
 
-
+action_cpt = 0
 while (1):
-    
-    #TODO mode aquisition des données =>  CNN => sortie du vecteur => action du bras 
+    print("action  : ",action_cpt)
     # TODO faire le check up si le son es trop fort alors on arrête tout 
-    # energy =sound.capture()
+    energy =sound.capture()
+    print(energy)
     # le print vient de la classe sensor 
     logger.write("sound recuperation \n")
 
-    # checkSound(sound)
-
+    end_option = checkSound(energy)
+    
     received_emotion = cnn.EmotionDetection(video.video)  
     logger.write("cnn utilisation \n") 
     # mise en fonction de la boucle 
     if received_emotion !=- 1 :
-        print("emotion reçu : ",emotional_vector[received_emotion])
+        robotsave.write("emotion reçu : ",emotional_vector[received_emotion])
         emotional_val = chooseAction(received_emotion)
-        print(emotional_val)
+
         logger.write("emotional values checking \n") 
         action = doARM(emotional_val)
         logger.write("arm function talking \n") 
@@ -90,51 +94,22 @@ while (1):
         arm_moving = True
         last_emotional_state = received_emotion
         emotion_modified = False 
-        cpt =  0
         while(arm_moving):
             received_emotion = cnn.EmotionDetection(video.video)
             if emotion_modified is False:
                 if last_emotional_state != received_emotion and received_emotion != -1 :
                     print(" nouvelle emotion reçu : ",emotional_vector[received_emotion])
                     emotionUpdate(last_emotional_state,received_emotion,action)
-                    print("changement d'émotion")
                     logger.write("emotion status update")
                     # checkArmMoving()
                     emotion_modified = True
                     arm_moving = checkArmMoving()
 
-            cpt= cpt +  1 
+
     if (end_option):
         logger.write(" end of execution")
         break
-    
-''' idée : 
- - principe de log 
-    principe de sauvegarde d'axtion de la dernière interaction
-'''
+    action_cpt = action_cpt + 1 
 
 
-'''  le CNN retourne le chiffre 
-préparer les test et la certification 
- '''
-
-# def modificationValEm():
-#     print("début du programme ")
-#     print(fonctionActivation)
-#     emotion = cnn_mock("")
-#     print("emotion ",emotional_vector[emotion] )
-#     indexAction = chooseAction(emotion)
-#     print("valeur de l'émotion ",indexAction)
-#     val = doARM(indexAction)
-#     print("pendant le déplacement du bras ")
-#     newemotion =  2
-#     emotionUpdate(emotion,newemotion,val)
-#     print("nouvelle emotion",emotional_vector[emotion])
-#     print(fonctionActivation)
-#     print("nouvelle action")
-#     val = chooseAction(emotion)
-#     print("valeur de l'émotion ",val)
-#     val = doARM(val)
-
-# print(fonction1.__name__)
-# modificationValEm()
+print("fin de la simulation")
