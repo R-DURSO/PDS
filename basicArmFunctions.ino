@@ -15,12 +15,14 @@
 #include <Braccio.h>
 #include <Servo.h>
 
-void waitAtSafetyPos(int signal, bool isClosed);
+void waitAtSafetyPos(int signal, bool isClosed, bool isWaiting);
 int getSignal();
 void putObjectAsideGood();
 void putObjectAsideBad();
 void pickObjectAtHisLeft();
 void pickObjectAtHisRight();
+void pickGoodObject(bool isWaiting);
+void pickBadObject(bool isWaiting);
 
 
 Servo base;
@@ -29,6 +31,11 @@ Servo elbow;
 Servo wrist_rot;
 Servo wrist_ver;
 Servo gripper;
+
+bool isClosed = true;
+bool isWaiting = false;
+int mySignal;
+
 
 void setup() {  
   //Initialization functions and set up the initial position for Braccio
@@ -40,6 +47,7 @@ void setup() {
   //Wrist rotation (M5): 90 degrees
   //gripper (M6): 10 degrees
   Braccio.begin();
+  Serial.begin(9600);
 }
 
 
@@ -47,19 +55,34 @@ void setup() {
 
 
 void loop() {
-  int mySignal = getSignal();
+  if (Serial.available() > 0) {
+  mySignal = getSignal();
 
   // the arm is aligned upwards  and the gripper is closed
                      //(step delay, M1, M2, M3, M4, M5, M6);
+  if(mySignal == '1'){
+    waitAtSafetyPos(mySignal, false, isWaiting);
+  }else if(mySignal == '2'){
+    pickGoodObject(isWaiting);
+  }else if(mySignal == '3'){
+    pickBadObject(isWaiting);
+  }
+  mySignal = 0;
+  }
+}
+
+void pickGoodObject(bool isWaiting){
+  isWaiting = false;
   pickObjectAtHisLeft();
   putObjectAsideGood();
+  Serial.write("Finished function 2 \n");
+}
+
+void pickBadObject(bool isWaiting){
+  isWaiting = false;
   pickObjectAtHisRight();
   putObjectAsideBad();
-  while(mySignal == 1){
-    waitAtSafetyPos(mySignal, false);
-    mySignal = getSignal;
-  }
-  
+  Serial.write("Finished function 3 \n");
 }
 
 void pickObjectAtHisLeft(){
@@ -114,16 +137,29 @@ void putObjectAsideBad(){
  * otherwise the griper will be open
  */
 
-void waitAtSafetyPos(int signal, bool isClosed){
-  if(signal== '1'){
-    isClosed ? Braccio.ServoMovement(20, 90, 15, 180, 150, 90, 10):Braccio.ServoMovement(20, 90, 15, 180, 150, 90, 73);
+void waitAtSafetyPos(int signal, bool isClosed, bool isWaiting){
+  if(!isWaiting){
+    isClosed ? Braccio.ServoMovement(20, 90, 135, 0, 0, 90, 10):Braccio.ServoMovement(20, 90, 135, 0, 0, 90, 73);
     delay(1000);
+    Serial.write("Waiting at safety pos \n");
+    isWaiting = true;
+  }else{
+    Serial.write("Still waiting at safety pos \n");
   }
-
+    
 }
 
 
 //testing purpose
 int getSignal(){
-  return 1;
+  int incomingByte = 0;
+   
+  // read the incoming byte:
+  incomingByte = Serial.read();
+
+  // say what you got:
+  Serial.write("Arduino received: ");
+  Serial.write(incomingByte);
+  Serial.write("\n");
+  return incomingByte;        
 }
