@@ -21,7 +21,7 @@ def EmotionDetection (cap) :
 
     ret, frame = cap.read()
     maxindex = -1
-    frame = cv2.resize(frame, (1280, 720))
+    frame = cv2.resize(frame, (640, 320))
     if not ret:
         exit
     face_detector = cv2.CascadeClassifier(path + '/haarcascades/haarcascade_frontalface_default.xml')

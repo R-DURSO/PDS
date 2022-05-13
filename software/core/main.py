@@ -59,14 +59,18 @@ def checkSound(Sound):
 logger = open("./logger/programmeExecution.txt", "w")
 robotsave = open("./logger/robotAction.txt", "w")
 video = sensor.VideoCapture()
-sound = sensor.SoundCapture()
+# sound = sensor.SoundCapture()
 energy =  0
 print("début du main ")
 logger.write("start of execution \n")
+
+
+
 while (1):
+    
     #TODO mode aquisition des données =>  CNN => sortie du vecteur => action du bras 
     # TODO faire le check up si le son es trop fort alors on arrête tout 
-    energy =sound.capture()
+    # energy =sound.capture()
     # le print vient de la classe sensor 
     logger.write("sound recuperation \n")
 
@@ -75,35 +79,35 @@ while (1):
     received_emotion = cnn.EmotionDetection(video.video)  
     logger.write("cnn utilisation \n") 
     # mise en fonction de la boucle 
-    emotional_val = chooseAction(received_emotion)
-    print(emotional_val)
-    logger.write("emotional values checking \n") 
-    action = doARM(emotional_val)
-    logger.write("arm function talking \n") 
-    
-    arm_moving = True
-    last_emotional_state = received_emotion
-    emotion_modified = False 
-    cpt =  0
-    if emotional_val !=- 1 :
+    if received_emotion !=- 1 :
+        print("emotion reçu : ",emotional_vector[received_emotion])
+        emotional_val = chooseAction(received_emotion)
+        print(emotional_val)
+        logger.write("emotional values checking \n") 
+        action = doARM(emotional_val)
+        logger.write("arm function talking \n") 
+        
+        arm_moving = True
+        last_emotional_state = received_emotion
+        emotion_modified = False 
+        cpt =  0
         while(arm_moving):
             received_emotion = cnn.EmotionDetection(video.video)
-            if emotion_modified == False:
-                if last_emotional_state != received_emotion:
-                    print("changement d'émotion")
+            if emotion_modified is False:
+                if last_emotional_state != received_emotion and received_emotion != -1 :
+                    print(" nouvelle emotion reçu : ",emotional_vector[received_emotion])
                     emotionUpdate(last_emotional_state,received_emotion,action)
+                    print("changement d'émotion")
                     logger.write("emotion status update")
                     # checkArmMoving()
-                    arm_mock(None)
                     emotion_modified = True
-            
-            cpt=+  1 
-            if cpt > 10000 : 
-                arm_moving =checkArmMoving()
+                    arm_moving = checkArmMoving()
+
+            cpt= cpt +  1 
     if (end_option):
         logger.write(" end of execution")
         break
-
+    
 ''' idée : 
  - principe de log 
     principe de sauvegarde d'axtion de la dernière interaction

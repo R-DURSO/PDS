@@ -23,7 +23,7 @@ class VideoCapture():
     def __init__(self):
         self.etat = True
         self.frameSize = (320,240)
-        self.video = cv.VideoCapture(0,cv.CAP_DSHOW)
+        self.video = cv.VideoCapture(1,cv.CAP_DSHOW)
         self.greyscale = None
         self.frame = None
         self.ret = None
