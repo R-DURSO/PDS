@@ -1,7 +1,13 @@
 import serial
 import time
-
-port = "/dev/ttyACM0"
+import serial.tools.list_ports
+import os
+ 
+if(os.name == "posix"):
+	port = "/dev/ttyACM0"
+else: 
+	port = serial.tools.list_ports.comports()[0].name
+	print(port)
 baudrate = 9600
 
 arduino = serial.Serial(port=port,

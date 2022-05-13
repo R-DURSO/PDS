@@ -7,19 +7,27 @@ if(os.name == "posix"):
 else: 
 	port = serial.tools.list_ports.comports()[0].name
 	print(port)
-baudrate = 115200
+baudrate = 9600
 	
-arduino = serial.Serial(port=port, baudrate=baudrate, timeout=0.1)
+arduino = serial.Serial(port=port, baudrate=baudrate,                         
+						bytesize=serial.EIGHTBITS,
+                        stopbits=serial.STOPBITS_ONE,
+                        timeout=5)
+time.sleep(8)
 
 def send(msg):
-	arduino.write(bytes(msg, "utf-8"))
-	time.sleep(0.5)
+    if arduino.isOpen():
+        print("port already opened \n")
+    else:
+        arduino.open()
+
+    msg = msg.encode()
+    arduino.write(msg)
+    time.sleep(1)
+
+def read():
 	data = arduino.readline()
-	
 	return data.decode()
 
-# q = None
-# while q != "":
-# 	q = input()
-# 	r = send(q)
-# 	print(f"Réponse: {r}\n")
+def getwaiting():
+	return arduino.in_waiting

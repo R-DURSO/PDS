@@ -1,14 +1,3 @@
-- connection camera CNN
-- connection CNN main 
-- connection main bras par port série
-- modification des valeur émotionelle
-- ajout de la récupération/sauvegarde des valeur emotionelle
-- faire le rapport
-- maj algo de modification émotionelle
-- faire la mise du readme permettant l'installation de notre projet 
-- faire un mail a boucenna sur nos avancer 
+- Comprendre le sosn et le faire marcher 
 
-
-
-
-pip install tensorflow-gpu
+- 
