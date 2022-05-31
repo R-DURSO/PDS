@@ -1,18 +1,31 @@
 # import sensor
+import imp
 from time import sleep
 import numpy as np 
 import os
 import cnn.API_CNN as cnn 
 import sensor
+import arm_communication.arduino_serial as arduino_serial
+import os 
+
+
+
+path = os.path.dirname(__file__)
+
 arm_moving = False
 end_option  = False 
 # TODO a modifier fonction 1 a 3 quand elle seront disponible poour modifier le bras 
 def fonction1():
     print("fonction 1 appeler ")
+    test = arduino_serial.send("1")
 def fonction2():
+    test = arduino_serial.send("2")
     print("fonction 2 appeler ")
 def fonction3():
+    test = arduino_serial.send("3")
     print("fonction 3 appeler ")
+
+
 emotional_vector = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 emotion_to_action = {0:-3,1:-1,2:-2,3:3,4:0,5:-1,6:2}
 object_vector = []
@@ -49,7 +62,7 @@ def checkArmMoving():
 def doARM(val):
     difference_array = np.abs(fonctionActivation-val)
     index = difference_array.argmin()
-    robotsave.write(get_action[index])
+    # robotsave.write(get_action[index])
     globals()[get_action[index]]()
     
     return index
@@ -60,8 +73,8 @@ def checkSound(energy):
     return False 
 ''' main boucle 
 '''
-logger = open("./logger/programmeExecution.txt", "w")
-robotsave = open("./logger/robotAction.txt", "w")
+logger = open(path+"/logger/programmeExecution.txt", "w")
+# robotsave = open(path+"/logger/robotAction.txt", "w")
 video = sensor.VideoCapture()
 sound = sensor.SoundCapture()
 energy =  0
@@ -73,18 +86,18 @@ action_cpt = 0
 while (1):
     print("action  : ",action_cpt)
     # TODO faire le check up si le son es trop fort alors on arrête tout 
-    energy =sound.capture()
+   # energy =sound.capture()
     print(energy)
     # le print vient de la classe sensor 
     logger.write("sound recuperation \n")
 
-    end_option = checkSound(energy)
+    #end_option = checkSound(energy)
     
     received_emotion = cnn.EmotionDetection(video.video)  
     logger.write("cnn utilisation \n") 
     # mise en fonction de la boucle 
     if received_emotion !=- 1 :
-        robotsave.write("emotion reçu : ",emotional_vector[received_emotion])
+        # robotsave.write("emotion reçu : ",emotional_vector[received_emotion])
         emotional_val = chooseAction(received_emotion)
 
         logger.write("emotional values checking \n") 

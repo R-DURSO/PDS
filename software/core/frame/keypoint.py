@@ -8,19 +8,20 @@ import scipy.ndimage
 path = os.path.dirname(__file__)
 # BGR color 
 # frame = cv.imread( path + "/carre.pgm")
-frame = cv.imread( path + "/rond.png")
-
-
-seuil = 40 
+# frame = cv.imread( path + "/triangle.jpg")
+# frame = cv.imread( path + "/carrer_blanc.jpg")
+# frame = cv.imread(path + "/boule.jpg")
+frame = cv.imread(path +"/b_tri.jpg")
+seuil = 120 
 
 def binarisation(frame):
     greyFrame = np.zeros((len(frame),len(frame[0])))
     for i in range(len(frame)):
         for j in range(len(frame[0])):
-            if (sum(frame[i][j]) / 255) > 20:
-                greyFrame[i][j] == 255
+            if (sum(frame[i][j]) / 3) > seuil:
+                greyFrame[i][j] == 0
             else:
-                greyFrame[i,j] = 0
+                greyFrame[i][j] = 255
 
     return greyFrame
 
@@ -34,7 +35,7 @@ frame = scipy.ndimage.median_filter(frame,size=10)
 filterX = np.array( ([-1,0,1],[-2,0,2],[-1,0,1])) 
 filterY = np.array( ([-1,-2,-1],[0,0,0],[1,2,1])) 
 mask = np.array( ([1,1,1],[1,0,1],[1,1,1]))
-# frame = gaussianBlur(frame)
+frame = gaussianBlur(frame)
 gaussianFilter = np.array( ([1/16,2/16,1/16],[2/16,4/16,2/16],[1/16,2/16,1/16])) 
 frameX = sp.convolve2d(frame,filterX,mode="same") 
 frameXmasked = sp.convolve2d(frameX,mask,mode="same") 
