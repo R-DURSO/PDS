@@ -26,8 +26,10 @@ def send(msg):
     time.sleep(1)
 
 def read():
-	data = arduino.readline()
-	return data.decode()
+    data = arduino.readline()
+    arduino.reset_input_buffer()
+    arduino.reset_output_buffer()
+    return data.decode()
 
 def getwaiting():
 	return arduino.in_waiting

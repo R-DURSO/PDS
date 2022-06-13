@@ -20,9 +20,10 @@ while(1):
     while(1):
         if arduino_serial.getwaiting()>0:
             read = arduino_serial.read()
+            a
             print("renvoi :  ",read)
             iter = iter + 1
-        if iter == 2 :
+        if read =="end\n" :
             break
     a = input('choisir un nombre :')
     iter = 0

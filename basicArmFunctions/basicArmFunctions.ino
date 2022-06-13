@@ -72,14 +72,14 @@ void pickGoodObject(bool isWaiting){
   isWaiting = false;
   pickObjectAtHisLeft();
   putObjectAsideGood();
-  Serial.write("Finished function 2 \n");
+  Serial.write("end\n");
 }
 
 void pickBadObject(bool isWaiting){
   isWaiting = false;
   pickObjectAtHisRight();
   putObjectAsideBad();
-  Serial.write("Finished function 3 \n");
+  Serial.write("end\n");
 }
 
 void pickObjectAtHisLeft(){
@@ -94,16 +94,19 @@ void pickObjectAtHisLeft(){
   */
                        //(step delay, M1, M2, M3, M4, M5, M6);
     Braccio.ServoMovement(20,         90, 90, 45, 25, 85, 10);
-    //Braccio.ServoMovement(20,         90, 70, 20, 25, 85, 10);
-    Braccio.ServoMovement(20, 90, 39, 190, 188, 90, 10);
-    Braccio.ServoMovement(20, 90, 39, 190, 188, 90, 73);
-    //Braccio.ServoMovement(20,         90, 70, 20, 25, 85, 73);
+    
+    Serial.write("stop\n");
+    Braccio.ServoMovement(20,         90, 70, 20, 25, 85, 10);
+    //Braccio.ServoMovement(20, 90, 39, 190, 188, 90, 10);
+    //Braccio.ServoMovement(20, 90, 39, 190, 188, 90, 73);
+    Braccio.ServoMovement(20,         90, 70, 20, 25, 85, 73);
     Braccio.ServoMovement(20,         90, 90, 45, 25, 85, 73);
   //delay for testing purpose
 }
 
 void pickObjectAtHisRight(){
     Braccio.ServoMovement(20,         110, 90, 45, 25, 85, 10);
+    Serial.write("stop\n");
     Braccio.ServoMovement(20,         110, 70, 20, 25, 85, 10);
     Braccio.ServoMovement(20,         110, 70, 20, 25, 85, 10);
     Braccio.ServoMovement(20,         110, 90, 45, 25, 85, 10);
