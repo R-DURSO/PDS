@@ -108,8 +108,8 @@ void pickObjectAtHisRight(){
     Braccio.ServoMovement(20,         110, 90, 45, 25, 85, 10);
     Serial.write("stop\n");
     Braccio.ServoMovement(20,         110, 70, 20, 25, 85, 10);
-    Braccio.ServoMovement(20,         110, 70, 20, 25, 85, 10);
-    Braccio.ServoMovement(20,         110, 90, 45, 25, 85, 10);
+    Braccio.ServoMovement(20,         110, 70, 20, 25, 85, 73);
+    Braccio.ServoMovement(20,         110, 90, 45, 25, 85, 73);
 }
 
 
