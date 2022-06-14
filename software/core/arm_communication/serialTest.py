@@ -1,7 +1,7 @@
 from time import sleep
 import arduino_serial
 
-test = arduino_serial.send("2")
+test = arduino_serial.send("1")
 
 iter = 0
 while(1):
@@ -20,7 +20,6 @@ while(1):
     while(1):
         if arduino_serial.getwaiting()>0:
             read = arduino_serial.read()
-            a
             print("renvoi :  ",read)
             iter = iter + 1
         if read =="end\n" :

@@ -1,8 +1,10 @@
 import numpy as np
 import cv2 as cv
 import scipy.signal as sp
+import os 
+path = os.path.dirname(__file__)
 
-frame = cv.imread("./pyramide.jpg")
+frame = cv.imread(path+"/pyramide.jpg")
 iframe = cv.resize(frame,(320,240))
 
 frame = cv.cvtColor(iframe, cv.COLOR_BGR2GRAY)
@@ -73,6 +75,6 @@ for line in lines:
 		y2 = int(y0 - 1000*(a))
 
 		cv.line(iframe,(x1,y1),(x2,y2),(0,0,255),2)
-
+cv.line(iframe,(48,50),(232,192),(0,255,0),2)
 cv.imshow("hough", iframe)
 cv.waitKey(0)
