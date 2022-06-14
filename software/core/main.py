@@ -1,4 +1,5 @@
 # import sensor
+from dis import dis
 import imp
 import re
 from time import sleep
@@ -8,7 +9,7 @@ import cnn.API_CNN as cnn
 import sensor
 import arm_communication.arduino_serial as arduino_serial
 import os 
-
+import frame.keypoint as kp
 # 0 camera du pc
 # 1 webcam du bras
 
@@ -30,13 +31,15 @@ def fonction3():
 
 emotional_vector = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 emotion_to_action = {0:-3,1:-1,2:-2,3:3,4:0,5:-1,6:2}
-object_vector = [,232]
-val_objet = [-2,2]
+object_vector = np.array([165,232])
+val_objet = np.array([-2,2])
 last_emotional_state = 0 
 cpt =  0
 fonctionActivation = np.array([-2,2])
 get_action  = {0:"fonction2",1:"fonction3"}
 end_option = False
+objet_find_val = 0
+objet_think = 0
 ''' mock variable '''
 emotional_vector_mock = np.random.randint(0,6)
 
@@ -51,7 +54,8 @@ def arm_mock(action):
 def emotionUpdate(last_emotional_state,received_emotion,action):
     #TODO  clarification de la méthode de calcul 
     if( last_emotional_state != -1  and received_emotion !=- 1):
-        diff = emotion_to_action[last_emotional_state] - emotion_to_action[received_emotion]
+        diff = 2*emotion_to_action[last_emotional_state] - 2*emotion_to_action[received_emotion]  + 0,5 *objet_think 
+        print("valeur modifier = ",diff)
         fonctionActivation[action] += diff
 
 def chooseAction(recevied_emotion):
@@ -60,7 +64,14 @@ def chooseAction(recevied_emotion):
     return val 
 
 def checkobjet():
-    pass
+    global objet_find_val
+    ret, frame = video2.video.read()
+    dist = int(kp.getdistance(frame))
+    difference_array = np.abs(object_vector-dist)
+    index = difference_array.argmin()
+    objet_find_val =  val_objet[index]
+
+
 
 def checkArmMoving():
     if arduino_serial.getwaiting()>0:
@@ -74,11 +85,11 @@ def checkArmMoving():
 
 def doARM(val):
     difference_array = np.abs(fonctionActivation-val)
-    print(difference_array)
     index = difference_array.argmin()
-    print(index)
     globals()[get_action[index]]()
-    
+    global objet_think 
+    objet_think = val_objet[index]
+    print("objet tihnk = ",objet_think)
     return index
 
 def checkSound(energy):

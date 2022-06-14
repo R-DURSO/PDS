@@ -31,24 +31,18 @@ def getdistance(frame):
                     ystart = j
 
 
-    print(xend," :x end \n")
-    print(yend," : y end \n")
-    print(xstart," : x start \n")
-    print(ystart," : y start \n")
-    print(sobel.shape)
-    print(sobel[ystart][xstart])
-    print(sobel[yend][xend])
-    cv.line(sobel,(ystart,xstart),(yend,xend),255,2)
-    cv.imshow("sobel",sobel)
-    cv.waitKey(0)
+    # print(xend," :x end \n")
+    # print(yend," : y end \n")
+    # print(xstart," : x start \n")
+    # print(ystart," : y start \n")
     dist = math.dist([ystart,xstart],[yend,xend])
     return dist
 
 
-frame = cv.imread(path+"/pyramide.jpg")
-# frame = cv.imread(path+"/test_final.jpg")
-frame = cv.resize(frame,(320,240))
-cv.imshow("frame",frame)
-cv.waitKey(0)
-dist  = getdistance(frame)
-print(dist)
+# frame = cv.imread(path+"/pyramide.jpg")
+# # frame = cv.imread(path+"/test_final.jpg")
+# frame = cv.resize(frame,(320,240))
+# cv.imshow("frame",frame)
+# cv.waitKey(0)
+# dist  = getdistance(frame)
+# print(dist)
