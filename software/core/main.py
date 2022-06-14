@@ -53,9 +53,9 @@ def arm_mock(action):
 
 def emotionUpdate(last_emotional_state,received_emotion,action):
     #TODO  clarification de la méthode de calcul 
+    diff = 0
     if( last_emotional_state != -1  and received_emotion !=- 1):
-        diff = 2*emotion_to_action[last_emotional_state] - 2*emotion_to_action[received_emotion]  + 0,5 *objet_think 
-        print("valeur modifier = ",diff)
+        diff = 2 *emotion_to_action[last_emotional_state] - 2* emotion_to_action[received_emotion]  +0.5 * objet_think - 0.5 * objet_find_val
         fonctionActivation[action] += diff
 
 def chooseAction(recevied_emotion):
@@ -69,7 +69,8 @@ def checkobjet():
     dist = int(kp.getdistance(frame))
     difference_array = np.abs(object_vector-dist)
     index = difference_array.argmin()
-    objet_find_val =  val_objet[index]
+    objet_find_val =  val_objet[index].item()
+    print("objet_dinf_val = ",objet_find_val)
 
 
 
@@ -88,7 +89,7 @@ def doARM(val):
     index = difference_array.argmin()
     globals()[get_action[index]]()
     global objet_think 
-    objet_think = val_objet[index]
+    objet_think = val_objet[index].item()
     print("objet tihnk = ",objet_think)
     return index
 
@@ -129,7 +130,7 @@ while (1):
         logger.write("arm function talking \n")  
         while(arm_moving):
             received_emotion = cnn.EmotionDetection(video.video)
-            if emotion_modified is False:
+            if emotion_modified is False and objet_find_val != 0:
                 if last_emotional_state != received_emotion and received_emotion != -1 :
                     print(" nouvelle emotion reçu : ",emotional_vector[received_emotion])
                     emotionUpdate(last_emotional_state,received_emotion,action)
