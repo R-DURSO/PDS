@@ -18,9 +18,12 @@ void putObjectAsideGood();
 void putObjectAsideBad();
 void pickObjectAtHisLeft();
 void pickObjectAtHisRight();
+void dropRight();
+void dropLeft();
 void pickGoodObject(bool isWaiting);
 void pickBadObject(bool isWaiting);
-
+void showObjectRight();
+void showObjectLeft();
 
 Servo base;
 Servo shoulder;
@@ -63,6 +66,10 @@ void loop() {
     pickGoodObject(isWaiting);
   }else if(mySignal == '3'){
     pickBadObject(isWaiting);
+  }else if(mySignal == '4'){
+    showObjectRight();
+  }else if(mySignal == '5'){
+    showObjectLeft();
   }
   mySignal = 0;
   }
@@ -129,6 +136,32 @@ void putObjectAsideBad(){
     Braccio.ServoMovement(20,         180, 70, 20, 25, 85, 10);
     Braccio.ServoMovement(20,         180, 90, 45, 25, 85, 10);
 
+}
+
+void dropRight(){
+  Braccio.ServoMovement(20,         110, 90, 45, 25, 85, 73);
+  Braccio.ServoMovement(20,         110, 70, 20, 25, 85, 73);
+  Braccio.ServoMovement(20,         110, 70, 20, 25, 85, 10);
+  Braccio.ServoMovement(20,         110, 90, 45, 25, 85, 10);
+    
+}
+
+void dropLeft(){
+  Braccio.ServoMovement(20,         90, 90, 45, 25, 85, 73);
+  Braccio.ServoMovement(20,         90, 70, 20, 25, 85, 73);
+  Braccio.ServoMovement(20,         90, 70, 20, 25, 85, 10);
+  Braccio.ServoMovement(20,         90, 90, 45, 25, 85, 10);
+}
+
+
+void showObjectRight(){
+  pickObjectAtHisRight();
+  dropRight();
+}
+
+void showObjectLeft(){
+  pickObjectAtHisLeft();
+  dropLeft();
 }
 
 /*
